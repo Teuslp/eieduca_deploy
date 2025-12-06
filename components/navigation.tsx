@@ -29,7 +29,7 @@ export function Navigation() {
           {/* Logo */}
           <Link href="/dashboard" className="flex items-center gap-2 text-lg font-bold text-primary sm:text-xl hover:opacity-80 transition-opacity">
             <BookOpen className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
-            <span>EduInclusiva</span>
+            <span>EiEduca+</span>
           </Link>
 
           {/* Menu Desktop */}
