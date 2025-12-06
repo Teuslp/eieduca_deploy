@@ -23,28 +23,30 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen flex-col md:flex-row">
 
       {/* LADO ESQUERDO — FORMULÁRIO */}
-      <div className="flex w-1/2 items-center justify-center bg-background p-8">
-        <Card className="w-full max-w-md">
+      <div className="flex w-full md:w-1/2 items-center justify-center bg-background p-6 md:p-10">
+        <Card className="w-full max-w-md shadow-none border-none">
           <CardHeader className="space-y-4 text-center">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary">
+            
+            <div className="mx-auto flex h-14 w-14 md:h-16 md:w-16 items-center justify-center rounded-full bg-primary">
               <Image
-                src="/logo-inicio.png" 
+                src="/logo-inicio.png"
                 alt="Logo EiEduca+"
                 width={32}
                 height={32}
-                className="h-8 w-8 object-contain"
+                className="h-7 w-7 md:h-8 md:w-8 object-contain"
               />
             </div>
 
             <div>
-              <CardTitle className="text-2xl font-bold">EiEduca+</CardTitle>
-              <CardDescription className="text-base text-[#64748B]">
+              <CardTitle className="text-2xl md:text-3xl font-bold">EiEduca+</CardTitle>
+              <CardDescription className="text-sm md:text-base text-[#64748B]">
                 Entre com suas credenciais para acessar a plataforma
               </CardDescription>
             </div>
+
           </CardHeader>
 
           <CardContent>
@@ -79,7 +81,6 @@ export default function LoginPage() {
                     autoComplete="current-password"
                     className="h-11 pr-10"
                   />
-
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
@@ -94,7 +95,7 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              {/* BOTÃO ENTRAR */}
+              {/* BOTÃO */}
               <Button
                 type="submit"
                 className="h-11 w-full text-base font-semibold bg-[#1E40AF] hover:bg-[#1E40AF]/90 text-white"
@@ -106,27 +107,27 @@ export default function LoginPage() {
               <div className="space-y-2 text-center text-sm">
                 <button
                   type="button"
-                  className="text-[#1E40AF] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E40AF]"
+                  className="text-[#1E40AF] hover:underline"
                 >
                   Esqueceu a senha?
                 </button>
 
-                <p className="text-muted-foreground color">
+                <p className="text-muted-foreground">
                   Não tem uma conta?{" "}
                   <button
                     type="button"
-                    className="text-[#1E40AF] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E40AF]"
-
+                    className="text-[#1E40AF] hover:underline"
                   >
                     Cadastre-se
                   </button>
                 </p>
               </div>
+
             </form>
 
             {/* RODAPÉ */}
             <div className="mt-6 border-t border-border pt-5">
-              <p className="text-[#1E40AF] text-center text-xs text-muted-foreground">
+              <p className="text-[#1E40AF] text-center text-xs opacity-80">
                 Plataforma desenvolvida com foco em acessibilidade e inclusão digital
               </p>
             </div>
@@ -135,9 +136,9 @@ export default function LoginPage() {
       </div>
 
       {/* LADO DIREITO — GRADIENTE */}
-      <div className="relative w-1/2 hidden md:flex items-center justify-center">
+      <div className="relative hidden md:flex w-1/2 items-center justify-center">
         <Image
-          src="/gradient-1.png"  
+          src="/gradient-1.png"
           alt="Background Azul - Login"
           fill
           priority
@@ -145,10 +146,10 @@ export default function LoginPage() {
         />
 
         <div className="relative z-10 text-white text-center px-10">
-          <h1 className="text-4xl font-bold mb-4">
+          <h1 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
             Transformando a educação com inclusão e tecnologia
           </h1>
-          <p className="text-lg opacity-90">
+          <p className="text-base md:text-lg opacity-90 leading-relaxed">
             Uma plataforma desenvolvida para conectar, apoiar e ampliar oportunidades de aprendizado.
           </p>
         </div>
