@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Professor {
+  id         Int     @id @default(autoincrement()) @map("id_professor")
+  nome       String  @db.VarChar(255)
+  email      String  @unique @db.VarChar(255)
+  redeEnsino String? @map("rede_ensino") @db.VarChar(255)
+
+  // Relacionamentos
+  certificacoes      Certificacao[]
+  progressoCursos    ProgressoCurso[]
+  progressoConteudos ProgressoConteudo[]
+
+  @@map("professor")
+}
+
+model Curso {
+  id           Int     @id @default(autoincrement()) @map("id_curso")
+  titulo       String  @db.VarChar(255)
+  cargaHoraria Int?    @map("carga_horaria")
+  areaFoco     String? @map("area_foco") @db.VarChar(255)
+
+  // Relacionamentos
+  modulos         Modulo[]
+  certificacoes   Certificacao[]
+  progressoCursos ProgressoCurso[]
+
+  @@map("curso")
+}
+
+model TecnologiaAssistiva {
+  id        Int     @id @default(autoincrement()) @map("id_ta")
+  nome      String  @db.VarChar(255)
+  categoria String? @db.VarChar(255)
+
+  // Relacionamentos
+  conteudos RelacaoConteudoTa[]
+
+  @@map("tecnologia_assistiva")
+}
+
+model Modulo {
+  id      Int    @id @default(autoincrement()) @map("id_modulo")
+  idCurso Int    @map("id_curso")
+  titulo  String @db.VarChar(255)
+  ordem   Int?
+
+  // Relacionamentos
+  curso     Curso      @relation(fields: [idCurso], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_modulo_curso")
+  conteudos Conteudo[]
+
+  @@map("modulo")
+}
+
+model Conteudo {
+  id           Int     @id @default(autoincrement()) @map("id_conteudo")
+  idModulo     Int     @map("id_modulo")
+  titulo       String  @db.VarChar(255)
+  tipoConteudo String? @map("tipo_conteudo") @db.VarChar(255)
+
+  // Relacionamentos
+  modulo             Modulo              @relation(fields: [idModulo], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_conteudo_modulo")
+  progressoConteudos ProgressoConteudo[]
+  tecnologias        RelacaoConteudoTa[]
+
+  @@map("conteudo")
+}
+
+model Certificacao {
+  id          Int      @id @default(autoincrement()) @map("id_certificado")
+  idProfessor Int      @map("id_professor")
+  idCurso     Int      @map("id_curso")
+  dataEmissao DateTime @map("data_emissao") @db.Date
+
+  // Relacionamentos
+  professor Professor @relation(fields: [idProfessor], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_certificacao_professor")
+  curso     Curso     @relation(fields: [idCurso], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_certificacao_curso")
+
+  @@map("certificacao")
+}
+
+model RelacaoConteudoTa {
+  idConteudo Int @map("id_conteudo")
+  idTa       Int @map("id_ta")
+
+  // Relacionamentos
+  conteudo            Conteudo            @relation(fields: [idConteudo], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_rel_conteudo")
+  tecnologiaAssistiva TecnologiaAssistiva @relation(fields: [idTa], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_rel_ta")
+
+  @@id([idConteudo, idTa])
+  @@map("relacao_conteudo_ta")
+}
+
+model ProgressoCurso {
+  idProfessor Int    @map("id_professor")
+  idCurso     Int    @map("id_curso")
+  status      String @db.VarChar(100)
+
+  // Relacionamentos
+  professor Professor @relation(fields: [idProfessor], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_prog_curso_prof")
+  curso     Curso     @relation(fields: [idCurso], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_prog_curso_curso")
+
+  @@id([idProfessor, idCurso])
+  @@map("progresso_curso")
+}
+
+model ProgressoConteudo {
+  idProfessor Int      @map("id_professor")
+  idConteudo  Int      @map("id_conteudo")
+  concluido   Boolean? @default(false)
+
+  // Relacionamentos
+  professor Professor @relation(fields: [idProfessor], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_prog_cont_prof")
+  conteudo  Conteudo  @relation(fields: [idConteudo], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_prog_cont_cont")
+
+  @@id([idProfessor, idConteudo])
+  @@map("progresso_conteudo")
+}
