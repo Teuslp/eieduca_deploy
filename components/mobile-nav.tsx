@@ -2,10 +2,11 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Menu, X, Home, Library, Award, GraduationCap } from "lucide-react"
+import { usePathname, useRouter } from "next/navigation"
+import { Menu, X, Home, Library, Award, GraduationCap, LogOut } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: Home },
@@ -17,6 +18,12 @@ const navItems = [
 export function MobileNav() {
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
+  const router = useRouter()
+
+  const handleLogout = () => {
+    setIsOpen(false)
+    router.push("/")
+  }
 
   return (
     <div className="lg:hidden">
@@ -41,7 +48,7 @@ export function MobileNav() {
 
           {/* Menu */}
           <nav
-            className="fixed left-0 right-0 top-16 z-50 border-b border-border bg-card p-4 shadow-lg"
+            className="fixed left-0 right-0 top-16 z-50 border-b border-border bg-card p-4 shadow-lg animate-in slide-in-from-top-5 duration-200"
             role="navigation"
             aria-label="Menu de navegação mobile"
           >
@@ -68,6 +75,21 @@ export function MobileNav() {
                   </Link>
                 )
               })}
+
+              <Separator className="my-2" />
+
+              {/* Botão Sair Mobile */}
+              <button
+                onClick={handleLogout}
+                className={cn(
+                  "flex w-full items-center gap-3 rounded-lg px-4 py-3 text-base font-medium transition-colors",
+                  "text-muted-foreground hover:bg-destructive/10 hover:text-destructive",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                )}
+              >
+                <LogOut className="h-5 w-5" aria-hidden="true" />
+                <span>Sair</span>
+              </button>
             </div>
           </nav>
         </>
