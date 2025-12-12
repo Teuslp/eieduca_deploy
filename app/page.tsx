@@ -1,57 +1,62 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import type React from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Eye, EyeOff } from "lucide-react"
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function LoginPage() {
-  const router = useRouter()
-  const [showPassword, setShowPassword] = useState(false)
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    router.push("/dashboard")
-  }
+    e.preventDefault();
+    router.push("/dashboard");
+  };
 
   return (
     <div className="flex min-h-screen flex-col md:flex-row">
-
-      {/* LADO ESQUERDO — FORMULÁRIO */}
+      {/* LADO FORMULÁRIO */}
       <div className="flex w-full md:w-1/2 items-center justify-center bg-background p-6 md:p-10">
         <Card className="w-full max-w-md shadow-none border-none">
-          <CardHeader className="space-y-4 text-center">
-            
-            <div className="mx-auto flex h-14 w-14 md:h-16 md:w-16 items-center justify-center rounded-full bg-primary">
+          <CardHeader className="space-y-4 text-left">
+            <div className="flex h-16 w-16 items-center justify-start rounded-full bg-primary">
               <Image
                 src="/logo-inicio.png"
                 alt="Logo EiEduca+"
                 width={32}
                 height={32}
-                className="h-7 w-7 md:h-8 md:w-8 object-contain"
+                className="h-15 w-10 ml-1 object-contain"
               />
             </div>
 
             <div>
-              <CardTitle className="text-2xl md:text-3xl font-bold">EiEduca+</CardTitle>
+              <CardTitle className="text-2xl md:text-3xl font-bold">
+                EiEduca+
+              </CardTitle>
+
               <CardDescription className="text-sm md:text-base text-[#64748B]">
                 Entre com suas credenciais para acessar a plataforma
               </CardDescription>
             </div>
-
           </CardHeader>
 
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-
               {/* EMAIL */}
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
@@ -122,20 +127,20 @@ export default function LoginPage() {
                   </button>
                 </p>
               </div>
-
             </form>
 
             {/* RODAPÉ */}
             <div className="mt-6 border-t border-border pt-5">
-              <p className="text-[#1E40AF] text-center text-xs opacity-80">
-                Plataforma desenvolvida com foco em acessibilidade e inclusão digital
+              <p className="text-[#1E40AF] text-center text-sm opacity-80">
+                Plataforma desenvolvida com foco em acessibilidade e inclusão
+                digital
               </p>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* LADO DIREITO — GRADIENTE */}
+      {/* LADO GRADIENTE */}
       <div className="relative hidden md:flex w-1/2 items-center justify-center">
         <Image
           src="/gradient-1.png"
@@ -150,10 +155,11 @@ export default function LoginPage() {
             Transformando a educação com inclusão e tecnologia
           </h1>
           <p className="text-base md:text-lg opacity-90 leading-relaxed">
-            Uma plataforma desenvolvida para conectar, apoiar e ampliar oportunidades de aprendizado.
+            Uma plataforma desenvolvida para conectar, apoiar e ampliar
+            oportunidades de aprendizado.
           </p>
         </div>
       </div>
     </div>
-  )
+  );
 }
