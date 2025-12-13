@@ -3,8 +3,11 @@
 import type React from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-
+import Link from "next/link";
 import Image from "next/image";
+
+import { signIn } from "next-auth/react";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,17 +18,35 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 import { Eye, EyeOff } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
+
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    router.push("/dashboard");
+    setLoading(true);
+
+    const result = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
+    setLoading(false);
+
+    if (result?.error) {
+      alert("Email ou senha incorretos!");
+    } else {
+      router.push("/dashboard");
+      router.refresh();
+    }
   };
 
   return (
@@ -34,7 +55,7 @@ export default function LoginPage() {
       <div className="flex w-full md:w-1/2 items-center justify-center bg-background p-6 md:p-10">
         <Card className="w-full max-w-md shadow-none border-none">
           <CardHeader className="space-y-4 text-left">
-            <div className="flex h-16 w-16 items-center justify-start rounded-full bg-primary">
+            <div className="flex h-16 w-16 items-center justify-start rounded-full bg-primary/10">
               <Image
                 src="/logo-inicio.png"
                 alt="Logo EiEduca+"
@@ -48,7 +69,6 @@ export default function LoginPage() {
               <CardTitle className="text-2xl md:text-3xl font-bold">
                 EiEduca+
               </CardTitle>
-
               <CardDescription className="text-sm md:text-base text-[#64748B]">
                 Entre com suas credenciais para acessar a plataforma
               </CardDescription>
@@ -92,9 +112,9 @@ export default function LoginPage() {
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                   >
                     {showPassword ? (
-                      <EyeOff className="h-4 w-4" aria-hidden="true" />
+                      <EyeOff className="h-4 w-4" />
                     ) : (
-                      <Eye className="h-4 w-4" aria-hidden="true" />
+                      <Eye className="h-4 w-4" />
                     )}
                   </button>
                 </div>
@@ -103,9 +123,10 @@ export default function LoginPage() {
               {/* BOTÃO */}
               <Button
                 type="submit"
+                disabled={loading}
                 className="h-11 w-full text-base font-semibold bg-[#1E40AF] hover:bg-[#1E40AF]/90 text-white"
               >
-                Entrar
+                {loading ? "Entrando..." : "Entrar"}
               </Button>
 
               {/* LINKS */}
@@ -119,12 +140,12 @@ export default function LoginPage() {
 
                 <p className="text-muted-foreground">
                   Não tem uma conta?{" "}
-                  <button
-                    type="button"
+                  <Link
+                    href="/cadastro"
                     className="text-[#1E40AF] hover:underline"
                   >
                     Cadastre-se
-                  </button>
+                  </Link>
                 </p>
               </div>
             </form>

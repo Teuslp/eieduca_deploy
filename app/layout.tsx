@@ -3,10 +3,12 @@ import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { Analytics } from "@vercel/analytics/next";
-import "./globals.css";
 import { Suspense } from "react";
 
+import "./globals.css";
+
 import { PreferencesProvider } from "./contexts/PreferencesContext";
+import { AuthProvider } from "@/components/auth-provider";
 
 export const metadata: Metadata = {
   title: "EiEduca+ - Educação Inclusiva e Acessível",
@@ -27,9 +29,13 @@ export default function RootLayout({
       <body
         className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}
       >
-        <PreferencesProvider>
-          <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
-        </PreferencesProvider>
+        <AuthProvider>
+          <PreferencesProvider>
+            <Suspense fallback={<div>Loading...</div>}>
+              {children}
+            </Suspense>
+          </PreferencesProvider>
+        </AuthProvider>
 
         <Analytics />
       </body>

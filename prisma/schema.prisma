@@ -123,3 +123,14 @@ model ProgressoConteudo {
   @@id([idProfessor, idConteudo])
   @@map("progresso_conteudo")
 }
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("STUDENT")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("users")
+}
