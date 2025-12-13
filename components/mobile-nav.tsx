@@ -3,16 +3,18 @@
 import { useState } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { Menu, X, Home, Library, Award, GraduationCap, LogOut } from "lucide-react"
+import { Menu, X, Home, Library, Award, GraduationCap, LogOut, User } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar" // Importe o Avatar
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: Home },
   { href: "/cursos", label: "Cursos", icon: GraduationCap },
   { href: "/biblioteca", label: "Biblioteca", icon: Library },
   { href: "/certificacao", label: "Certificação", icon: Award },
+  { href: "/perfil", label: "Meu Perfil", icon: User }, // Adicionei explicitamente
 ]
 
 export function MobileNav() {
@@ -34,62 +36,72 @@ export function MobileNav() {
         aria-label={isOpen ? "Fechar menu" : "Abrir menu"}
         aria-expanded={isOpen}
       >
-        {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
       </Button>
 
       {isOpen && (
         <>
-          {/* Overlay */}
+          {/* Fundo Escuro (Overlay) */}
           <div
             className="fixed inset-0 top-16 z-40 bg-background/80 backdrop-blur-sm"
             onClick={() => setIsOpen(false)}
             aria-hidden="true"
           />
 
-          {/* Menu */}
+          {/* O Menu em Si */}
           <nav
             className="fixed left-0 right-0 top-16 z-50 border-b border-border bg-card p-4 shadow-lg animate-in slide-in-from-top-5 duration-200"
             role="navigation"
-            aria-label="Menu de navegação mobile"
           >
-            <div className="space-y-1">
-              {navItems.map((item) => {
-                const Icon = item.icon
-                const isActive = pathname === item.href
+            <div className="space-y-4">
+              
+              {/* --- NOVO: SEÇÃO DE PERFIL NO TOPO --- */}
+              <div className="flex items-center gap-3 px-2 mb-4">
+                 <Avatar className="h-10 w-10 border border-border">
+                    <AvatarImage src="/avatar-placeholder.png" />
+                    <AvatarFallback>MP</AvatarFallback>
+                 </Avatar>
+                 <div className="flex flex-col">
+                    <span className="text-sm font-semibold">Mateus Pereira</span>
+                    <span className="text-xs text-muted-foreground">mateus@exemplo.com</span>
+                 </div>
+              </div>
+              
+              <Separator />
+              {/* ------------------------------------- */}
 
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setIsOpen(false)}
-                    className={cn(
-                      "flex items-center gap-3 rounded-lg px-4 py-3 text-base font-medium transition-colors",
-                      "hover:bg-accent hover:text-accent-foreground",
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                      isActive && "bg-primary text-primary-foreground hover:bg-primary/90",
-                    )}
-                    aria-current={isActive ? "page" : undefined}
-                  >
-                    <Icon className="h-5 w-5" aria-hidden="true" />
-                    <span>{item.label}</span>
-                  </Link>
-                )
-              })}
+              <div className="space-y-1">
+                {navItems.map((item) => {
+                  const Icon = item.icon
+                  const isActive = pathname === item.href
 
-              <Separator className="my-2" />
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className={cn(
+                        "flex items-center gap-3 rounded-lg px-4 py-3 text-base font-medium transition-colors",
+                        "hover:bg-accent hover:text-accent-foreground",
+                        isActive && "bg-primary/10 text-primary hover:bg-primary/20", // Usei suas cores de tema
+                      )}
+                    >
+                      <Icon className="h-5 w-5" />
+                      <span>{item.label}</span>
+                    </Link>
+                  )
+                })}
 
-              {/* Botão Sair Mobile */}
-              <button
-                onClick={handleLogout}
-                className={cn(
-                  "flex w-full items-center gap-3 rounded-lg px-4 py-3 text-base font-medium transition-colors",
-                  "text-muted-foreground hover:bg-destructive/10 hover:text-destructive",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                )}
-              >
-                <LogOut className="h-5 w-5" aria-hidden="true" />
-                <span>Sair</span>
-              </button>
+                <Separator className="my-2" />
+
+                <button
+                  onClick={handleLogout}
+                  className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-base font-medium transition-colors text-destructive hover:bg-destructive/10"
+                >
+                  <LogOut className="h-5 w-5" />
+                  <span>Sair</span>
+                </button>
+              </div>
             </div>
           </nav>
         </>
